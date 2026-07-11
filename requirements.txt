@@ -1,0 +1,9 @@
+tensorflow
+opencv-python
+numpy
+pandas
+scikit-learn
+joblib
+pyserial
+matplotlib
+RPi.GPIO ; platform_machine == "armv7l" or platform_machine == "aarch64"

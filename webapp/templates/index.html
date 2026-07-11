@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watch Station — Forest Fire Monitoring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="station">
+
+  <header class="station__header">
+    <div class="station__mark">
+      <span class="station__dot"></span>
+      <span>WATCH STATION</span>
+    </div>
+    <h1 class="station__title">Forest Fire Monitoring</h1>
+    <p class="station__subtitle">Live risk read-out from field sensors, plus visual confirmation from camera imagery.</p>
+  </header>
+
+  <main class="grid">
+
+    <!-- ============ GAUGE PANEL ============ -->
+    <section class="panel panel--gauge">
+      <div class="panel__label">
+        <span class="eyebrow">01 — RISK READING</span>
+      </div>
+
+      <div class="gauge">
+        <svg viewBox="0 0 240 140" class="gauge__dial">
+          <!-- background arc -->
+          <path d="M 20 120 A 100 100 0 0 1 220 120" class="gauge__track"/>
+          <!-- zone arcs -->
+          <path d="M 20 120 A 100 100 0 0 1 89 27" class="gauge__zone gauge__zone--safe"/>
+          <path d="M 89 27 A 100 100 0 0 1 151 27" class="gauge__zone gauge__zone--watch"/>
+          <path d="M 151 27 A 100 100 0 0 1 220 120" class="gauge__zone gauge__zone--alert"/>
+          <!-- ticks -->
+          <g class="gauge__ticks"></g>
+          <!-- needle -->
+          <g id="needleGroup" style="transform-origin: 120px 120px;">
+            <line x1="120" y1="120" x2="120" y2="35" class="gauge__needle" id="needle"/>
+            <circle cx="120" cy="120" r="7" class="gauge__hub"/>
+          </g>
+        </svg>
+        <div class="gauge__readout">
+          <span class="gauge__value" id="probValue">—</span>
+          <span class="gauge__caption" id="riskLabel">AWAITING DATA</span>
+        </div>
+      </div>
+
+      <div class="zone-key">
+        <span class="zone-key__item"><i class="zone-key__swatch zone-key__swatch--safe"></i>Safe</span>
+        <span class="zone-key__item"><i class="zone-key__swatch zone-key__swatch--watch"></i>Watch</span>
+        <span class="zone-key__item"><i class="zone-key__swatch zone-key__swatch--alert"></i>Alert</span>
+      </div>
+    </section>
+
+    <!-- ============ SENSOR INPUT PANEL ============ -->
+    <section class="panel panel--inputs">
+      <div class="panel__label">
+        <span class="eyebrow">02 — FIELD SENSORS</span>
+      </div>
+
+      <form id="sensorForm" class="sensor-form">
+
+        <div class="field">
+          <div class="field__head">
+            <label for="temperature">Temperature</label>
+            <output class="field__value" id="temperature-out">32°C</output>
+          </div>
+          <input type="range" id="temperature" min="10" max="55" step="0.5" value="32">
+        </div>
+
+        <div class="field">
+          <div class="field__head">
+            <label for="humidity">Humidity</label>
+            <output class="field__value" id="humidity-out">40%</output>
+          </div>
+          <input type="range" id="humidity" min="5" max="95" step="1" value="40">
+        </div>
+
+        <div class="field">
+          <div class="field__head">
+            <label for="smoke_level">Smoke level</label>
+            <output class="field__value" id="smoke_level-out">150</output>
+          </div>
+          <input type="range" id="smoke_level" min="0" max="800" step="5" value="150">
+        </div>
+
+        <div class="field">
+          <div class="field__head">
+            <label for="wind_speed">Wind speed</label>
+            <output class="field__value" id="wind_speed-out">10 km/h</output>
+          </div>
+          <input type="range" id="wind_speed" min="0" max="40" step="0.5" value="10">
+        </div>
+
+        <div class="field">
+          <div class="field__head">
+            <label for="rainfall">Rainfall</label>
+            <output class="field__value" id="rainfall-out">2 mm</output>
+          </div>
+          <input type="range" id="rainfall" min="0" max="20" step="0.5" value="2">
+        </div>
+
+        <button type="submit" class="btn">Read risk level</button>
+      </form>
+      <p class="hint" id="sensorHint">Adjust the readings, then take a reading.</p>
+    </section>
+
+    <!-- ============ IMAGE DETECTION PANEL ============ -->
+    <section class="panel panel--image">
+      <div class="panel__label">
+        <span class="eyebrow">03 — VISUAL CONFIRMATION</span>
+      </div>
+      <p class="panel__desc">Upload a photo from the field camera to check for visible fire or smoke.</p>
+
+      <label class="dropzone" id="dropzone">
+        <input type="file" id="imageInput" accept="image/*" hidden>
+        <span class="dropzone__icon">⬆</span>
+        <span class="dropzone__text">Click to choose a photo</span>
+      </label>
+
+      <div class="image-result" id="imageResult"></div>
+    </section>
+
+  </main>
+
+  <footer class="station__footer">
+    Model read-outs are estimates for a learning project — not a certified fire-safety system.
+  </footer>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
